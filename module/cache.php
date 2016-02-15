@@ -6,37 +6,6 @@ function get_cache_filename($cache_name) {
     return CACHE_PATH . (substr($cache_name,0,1)=='/'?'':'/') . $cache_name;
 }
 
-function get_cache_list($path = '', $readable = 0) {
-    // review pending
-    // is this function really necessary?
-
-    $path = get_cache_filename($path);
-
-    $caches_glob = glob($path.'*', GLOB_MARK);
-
-    $caches = array();
-
-    foreach($caches_glob as $cache) {
-        if ($readable) {
-            $caches[] = array (
-                'filename' => substr($cache, strlen(CACHE_PATH)),
-                'filesize' => (is_dir($cache)?'--':number_format(filesize($cache), 0, '.', ',')),
-                'mtime' => date('Y-m-d H:i:s', filemtime($cache)),
-                'atime' => date('Y-m-d H:i:s', fileatime($cache)),
-            );
-        } else {
-            $caches[] = array (
-                'filename' => substr($cache, strlen(CACHE_PATH)),
-                'filesize' => (is_dir($cache)?null:filesize($cache)),
-                'mtime' => filemtime($cache),
-                'atime' => fileatime($cache),
-            );
-        }
-    }
-
-    return $caches;
-}
-
 function put_cache($cache_name, $object, $nest_level = 0) {
     //review pending
 
